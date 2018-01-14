@@ -1,0 +1,28 @@
+{% extends 'common/base.html' %}
+
+{#{% from 'common/macro.html' import show_pagination %}#}
+
+{% block title %}帖子收藏{% endblock %}
+
+{% block page_content %}
+<div class="page-header"><h1>帖子收藏列表</h1></div>
+    {# 遍历展示帖子 #}
+    {% for p in postlist %}
+        <hr />
+        <div class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" src="{{ url_for('static', filename='upload/'+p.user.icon) }}" alt="头像" style="height: 64px; width: 64px;">
+                </a>
+            </div>
+            <div class="media-body">
+                <div style="float: right;">{{ moment(p.timestamp).fromNow() }}</div>
+                <h4 class="media-heading">{{ p.user.username }}</h4>
+                {{ p.content }}
+                 <div style="float:right;"><a href="{{ url_for('post.discollect',id =p.id) }}">取消收藏</a></div>
+            </div>
+        </div>
+    {% endfor %}
+    <hr />
+{#  {{ show_pagination(postlist, 'post.mycollect') }}#}
+{% endblock %}

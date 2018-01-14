@@ -1,0 +1,47 @@
+{% extends 'common/base.html' %}
+
+{% from 'common/macro.html' import show_pagination %}
+
+{% block title %}帖子回复{% endblock %}
+
+{% block page_content %}
+    <h3>帖子详情</h3>
+    {{ wtf.quick_form(form) }}
+
+     <div class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" src="{{ url_for('static', filename='upload/'+post.user.icon) }}" alt="头像" style="height: 64px; width: 64px;">
+                </a>
+            </div>
+            <div class="media-body">
+                <div style="float: right;">{{ moment(post.timestamp).fromNow() }}</div>
+                <h4 class="media-heading">{{ post.user.username }}</h4>
+                <h3>{{ post.title }}</h3>
+                {{ post.content }}
+                <div style="float: right;">收藏数量：{{ post.click }}</div>
+            </div>
+        </div>
+
+    <h3>网友回帖</h3>
+
+    {% for p in posts %}
+        <hr />
+        <div class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" src="{{ url_for('static', filename='upload/'+p.user.icon) }}" alt="头像" style="height: 64px; width: 64px;">
+                </a>
+            </div>
+            <div class="media-body">
+                <div style="float: right;">{{ moment(p.timestamp).fromNow() }}</div>
+                <h4 class="media-heading">{{ p.user.username }}</h4>
+                <h3>{{ p.title }}</h3>
+                {{ p.content }}
+            </div>
+        </div>
+    {% endfor %}
+    <hr />
+    {# 分页构造url时的额外参数 #}
+    {{ show_pagination(pagination, 'post.detail', id=id) }}
+{% endblock %}

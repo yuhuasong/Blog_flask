@@ -1,0 +1,31 @@
+{% extends 'common/base.html' %}
+
+{% from 'common/macro.html' import show_pagination %}
+
+{% block title %}我的发表{% endblock %}
+
+{% block page_content %}
+    {{ wtf.quick_form(form) }}
+
+    {# 遍历展示帖子 #}
+    {% for p in posts %}
+        <hr />
+        <div class="media">
+            <div class="media-left">
+                <a href="#">
+                    <a href="{{ url_for('post.detail',id = p.id ) }}"><img class="media-object" src="{{ url_for('static', filename='upload/'+p.user.icon) }}" alt="头像" style="height: 64px; width: 64px;"></a>
+                </a>
+            </div>
+            <div class="media-body">
+                <div style="float: right;">{{ moment(p.timestamp).fromNow() }}</div>
+                <h4 class="media-heading">{{ p.user.username }}</h4>
+                <h3><a href="{{ url_for('post.detail',id = p.id ) }}">{{ p.title }}</a></h3>
+                {{ p.content }}
+                <div style="float:right;"><a href="{{ url_for('post.collect',id=p.id) }}">收藏</a>&nbsp;<a href="{{ url_for('post.detail',id = p.id ) }}">评论</a></div>
+            </div>
+        </div>
+    {% endfor %}
+    <hr />
+    {# 分页构造url时的额外参数 #}
+    {{ show_pagination(pagination, 'post.publish') }}
+{% endblock %}
